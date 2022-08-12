@@ -5,6 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const upload = multer();
 const SendMail = require('./sendMail');
+const { check, validationResult } = require('express-validator');
 
 const app = express();
 
@@ -20,15 +21,12 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 router.post('/contact', upload.none(), (req, res) => {
-  console.log(req.body);
-
   const data = req.body;
-  const { email, message, info } = data;
-  console.log(email, message);
+  const { email, message, info, source } = data;
 
   //  Info is a honeypot field, reject if it has a value
   if (!info) {
-    const sm = new SendMail(email, message);
+    const sm = new SendMail(email, message, source);
 
     try {
       sm.send();

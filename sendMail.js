@@ -3,12 +3,17 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 
 class SendMail {
-  constructor(contactEmail, contactMessage) {
-    this.contactEmail = contactEmail;
-    this.contactMessage = contactMessage;
+  #contactEmail;
+  #contactMessage;
+  #source;
+
+  constructor(contactEmail, contactMessage, source) {
+    this.#contactEmail = contactEmail;
+    this.#contactMessage = contactMessage;
+    this.#source = source;
   }
 
-  transporter = nodemailer.createTransport({
+  #transporter = nodemailer.createTransport({
     service: 'Gmail',
     host: 'smtp-relay.gmail.com',
     secure: true,
@@ -19,18 +24,18 @@ class SendMail {
     },
   });
 
-  emailContent = () => {
+  #emailContent = () => {
     return {
-      from: this.contactEmail,
-      to: process.env.SMTP_USER,
-      replyTo: this.contactEmail,
+      from: this.#contactEmail,
+      to: process.env.EMAIL_TO,
+      replyTo: this.#contactEmail,
       subject: 'Contact Form Submission',
-      html: `${this.contactMessage}`,
+      html: `<p>${this.#contactMessage}</p><hr><p>Source: ${this.#source}</p>`,
     };
   };
 
   send = () => {
-    this.transporter.sendMail(this.emailContent(), (error) => {
+    this.#transporter.sendMail(this.#emailContent(), (error) => {
       if (error) {
         console.log(error);
         console.log('Something went wrong');
