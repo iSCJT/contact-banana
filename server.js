@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const upload = multer();
-const SendMail = require('./sendMail');
+const SendMail = require('./send-mail');
 // const { check, validationResult } = require('express-validator');
 
 const app = express();
