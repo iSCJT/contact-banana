@@ -29,9 +29,12 @@ router.post('/contact', upload.none(), async (req, res) => {
     const sm = new SendMail(email, message, source);
 
     try {
-      await sm.send();
+      const sendResult = await sm.send();
+      // console.log('logging send');
+      console.log(sendResult);
       res.status(200).send('Successfully sent message');
-    } catch {
+    } catch (err) {
+      console.log(err);
       res.status(500).send('Error sending mail');
     }
   } else {

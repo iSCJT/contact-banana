@@ -14,7 +14,7 @@ class SendMail {
   }
 
   #transporter = nodemailer.createTransport({
-    service: 'Gmail',
+    // service: 'Gmail',
     host: 'smtp-relay.gmail.com',
     secure: true,
     requireTLS: true,
@@ -35,13 +35,8 @@ class SendMail {
   };
 
   send = async () => {
-    this.#transporter.sendMail(this.#emailContent(), (error) => {
-      if (error) {
-        console.log(error);
-        console.log('Something went wrong');
-        throw 'Error sending email';
-      }
-    });
+    console.log('sending email');
+    return this.#transporter.sendMail(this.#emailContent());
   };
 
   //   transporter = nodemailer.createTransport({
