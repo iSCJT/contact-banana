@@ -20,7 +20,7 @@ app.use(function (req, res, next) {
 
 app.use(express.json());
 
-router.post('/contact', upload.none(), (req, res) => {
+router.post('/contact', upload.none(), async (req, res) => {
   const data = req.body;
   const { email, message, info, source } = data;
 
@@ -29,7 +29,7 @@ router.post('/contact', upload.none(), (req, res) => {
     const sm = new SendMail(email, message, source);
 
     try {
-      sm.send();
+      await sm.send();
       res.status(200).send('Successfully sent message');
     } catch {
       res.status(500).send('Error sending mail');
@@ -41,9 +41,6 @@ router.post('/contact', upload.none(), (req, res) => {
 
 app.use('/', router);
 
-const server = app.listen(3000, function () {
-  const host = server.address().address;
-  const port = server.address().port;
-
-  console.log('Server listening at http://%s:%s', host, port);
+app.listen(3000, function () {
+  console.log('Server listening at https://contact.speckledbanana.com');
 });

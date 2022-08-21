@@ -34,7 +34,7 @@ class SendMail {
     };
   };
 
-  send = () => {
+  send = async () => {
     this.#transporter.sendMail(this.#emailContent(), (error) => {
       if (error) {
         console.log(error);
