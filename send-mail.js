@@ -16,8 +16,11 @@ class SendMail {
   #transporter = nodemailer.createTransport({
     // service: 'Gmail',
     host: 'smtp-relay.gmail.com',
-    secure: true,
+    secure: false,
     requireTLS: true,
+    tls: {
+      rejectUnauthorized: false,
+    },
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASSWORD,
@@ -26,11 +29,13 @@ class SendMail {
 
   #emailContent = () => {
     return {
-      from: this.#contactEmail,
+      from: process.env.EMAIL_TO,
       to: process.env.EMAIL_TO,
       replyTo: this.#contactEmail,
       subject: 'Contact Form Submission',
-      html: `<p>${this.#contactMessage}</p><hr><p>Source: ${this.#source}</p>`,
+      html: `<p>${this.#contactMessage}</p><hr><p>From: ${
+        this.#contactEmail
+      }</p><hr><p>Source: ${this.#source}</p>`,
     };
   };
 
