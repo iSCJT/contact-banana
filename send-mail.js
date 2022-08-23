@@ -16,7 +16,7 @@ class SendMail {
   #transporter = nodemailer.createTransport({
     // service: 'Gmail',
     host: 'smtp-relay.gmail.com',
-    secure: false,
+    secure: true,
     requireTLS: true,
     tls: {
       rejectUnauthorized: false,

@@ -9,6 +9,7 @@ const SendMail = require('./send-mail');
 
 const app = express();
 
+// TODO: CORS not blocking processing of request
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', process.env.ALLOW_ORIGIN);
   res.header(
