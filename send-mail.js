@@ -13,8 +13,9 @@ class SendMail {
     this.#source = source;
   }
 
+  // ========= FORMAT FOR GMAIL ==========
+
   #transporter = nodemailer.createTransport({
-    // service: 'Gmail',
     host: 'smtp-relay.gmail.com',
     secure: true,
     requireTLS: true,
@@ -44,6 +45,8 @@ class SendMail {
     return this.#transporter.sendMail(this.#emailContent());
   };
 
+  // ========= FORMAT FOR OAUTH IF USING ==========
+
   //   transporter = nodemailer.createTransport({
   //     host: 'smtp.gmail.com',
   //     port: 465,
@@ -55,6 +58,8 @@ class SendMail {
   //     },
   //   });
 
+  // ========= FORMAT FOR LOCAL TESTING ==========
+
   //   transporter = nodemailer.createTransport({
   //     host: 'localhost',
   //     port: 1025,
@@ -63,14 +68,6 @@ class SendMail {
   //       pass: 'secret.1',
   //     },
   //   });
-
-  //   verify = (error) => {
-  //     if (error) {
-  //       console.log(error);
-  //     } else {
-  //       console.log('Ready to Send');
-  //     }
-  //   };
 }
 
 module.exports = SendMail;

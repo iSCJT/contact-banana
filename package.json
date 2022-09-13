@@ -4,19 +4,17 @@
   "description": "Simple contact form backend using nodemailer",
   "main": "server.js",
   "scripts": {
-    "test": "test",
     "start": "node server.js"
   },
   "repository": {
-    "type": "git",
     "url": "git+https://github.com/iSCJT/contact-banana.git"
   },
   "keywords": [
-    "contact",
-    "form",
-    "email"
+    "contact form",
+    "email",
+    "nodemailer"
   ],
-  "author": "Sean Thompson (Speckled Banana)",
+  "author": "iSCJT <sean@speckledbanana.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/iSCJT/contact-banana/issues"

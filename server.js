@@ -1,27 +1,28 @@
 require('dotenv').config();
 
 const express = require('express');
-const router = express.Router();
 const multer = require('multer');
-const upload = multer();
 const SendMail = require('./send-mail');
-// const { check, validationResult } = require('express-validator');
 
 const app = express();
+const router = express.Router();
+const upload = multer();
+const port = process.env.PORT;
 
-// TODO: CORS not blocking processing of request
-app.use(function (req, res, next) {
+const checkDomain = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', process.env.ALLOW_ORIGIN);
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
+  res.header('Access-Control-Allow-Methods', 'POST');
+  if (req.get('origin') !== process.env.ALLOW_ORIGIN) {
+    res.status(403).send();
+    res.end();
+  } else {
+    next();
+  }
+};
 
 app.use(express.json());
 
-router.post('/contact', upload.none(), async (req, res) => {
+app.post('/contact', checkDomain, upload.none(), async (req, res) => {
   const data = req.body;
   const { email, message, info, source } = data;
 
@@ -31,12 +32,11 @@ router.post('/contact', upload.none(), async (req, res) => {
 
     try {
       const sendResult = await sm.send();
-      // console.log('logging send');
       console.log(sendResult);
       res.status(200).send('Successfully sent message');
     } catch (err) {
       console.log(err);
-      res.status(500).send('Error sending mail');
+      res.status(500).send('Error sending message');
     }
   } else {
     res.status(403).send();
@@ -45,6 +45,6 @@ router.post('/contact', upload.none(), async (req, res) => {
 
 app.use('/', router);
 
-app.listen(3000, function () {
-  console.log('Server listening at https://contact.speckledbanana.com');
+app.listen(port, function () {
+  console.log(`Server listening on port ${port}`);
 });
