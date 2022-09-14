@@ -17,7 +17,7 @@ class SendMail {
 
   #transporter = nodemailer.createTransport({
     host: 'smtp-relay.gmail.com',
-    secure: true,
+    secure: false,
     requireTLS: true,
     tls: {
       rejectUnauthorized: false,
@@ -26,6 +26,8 @@ class SendMail {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASSWORD,
     },
+    connectionTimeout: 5000,
+    greetingTimeout: 5000,
   });
 
   #emailContent = () => {
@@ -42,7 +44,7 @@ class SendMail {
 
   send = async () => {
     console.log('sending email');
-    return this.#transporter.sendMail(this.#emailContent());
+    return await this.#transporter.sendMail(this.#emailContent());
   };
 
   // ========= FORMAT FOR OAUTH IF USING ==========

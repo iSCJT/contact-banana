@@ -1,2 +1,2 @@
 # contact-banana
-Basic contact form back end using nodemailer
+Very basic contact form back end using nodemailer.
