@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv').config();
 const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
 
 class SendMail {
   #contactEmail;
@@ -13,22 +14,14 @@ class SendMail {
     this.#source = source;
   }
 
-  // ========= FORMAT FOR GMAIL ==========
-
-  #transporter = nodemailer.createTransport({
-    host: 'smtp-relay.gmail.com',
-    secure: false,
-    requireTLS: true,
-    tls: {
-      rejectUnauthorized: false,
-    },
+  #mailgunAuth = {
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
+      api_key: process.env.MG_API_KEY,
+      domain: process.env.MG_DOMAIN,
     },
-    connectionTimeout: 5000,
-    greetingTimeout: 5000,
-  });
+  };
+
+  #transporter = nodemailer.createTransport(mg(this.#mailgunAuth));
 
   #emailContent = () => {
     return {
@@ -70,6 +63,23 @@ class SendMail {
   //       pass: 'secret.1',
   //     },
   //   });
+
+  // ========= FORMAT FOR GMAIL ==========
+
+  // #transporter = nodemailer.createTransport({
+  //   host: 'smtp.mailgun.org',
+  //   secure: false,
+  //   requireTLS: true,
+  //   tls: {
+  //     rejectUnauthorized: false,
+  //   },
+  //   auth: {
+  //     user: process.env.SMTP_USER,
+  //     pass: process.env.SMTP_PASSWORD,
+  //   },
+  //   connectionTimeout: 5000,
+  //   greetingTimeout: 5000,
+  // });
 }
 
 module.exports = SendMail;
